@@ -5,7 +5,7 @@ namespace Gourmet\Whoops\Error;
 use Cake\Core\Configure;
 use Cake\Error\ErrorHandler;
 use Whoops\Run;
-use Whoops\Handler\PrettyPageHandler;
+use Gourmet\Whoops\Handler\PrettyPageHandler;
 
 class WhoopsHandler extends ErrorHandler
 {
@@ -16,6 +16,19 @@ class WhoopsHandler extends ErrorHandler
 		if (empty($this->_whoops)) {
 			$this->_whoops = new Run();
 		}
+
+		$handler = new PrettyPageHandler();
+
+		if ($this->_options['handler']['editor']) {
+			$handler->setEditor($this->_options['handler']['editor']);
+		}
+
+		if ($this->_options['handler']['hostRoot']) {
+			$handler->setHostRoot($this->_options['handler']['hostRoot']);
+		}
+
+		$this->_whoops->pushHandler($handler);
+
 		return $this->_whoops;
 	}
 
@@ -23,7 +36,6 @@ class WhoopsHandler extends ErrorHandler
 	{
 		if ($debug) {
 			$whoops = $this->getWhoopsInstance();
-			$whoops->pushHandler(new PrettyPageHandler());
 			$whoops->handleError($error['level'], $error['description'], $error['file'], $error['line']);
 		} else {
 			parent::_displayError($error, $debug);
@@ -34,7 +46,6 @@ class WhoopsHandler extends ErrorHandler
 	{
 		if (Configure::read('debug')) {
 			$whoops = $this->getWhoopsInstance();
-			$whoops->pushHandler(new PrettyPageHandler());
 			$whoops->handleException($exception);
 		} else {
 			parent::_displayException($exception);

@@ -28,6 +28,20 @@ with the Whoops handler:
 
 That's it!
 
+## Editor
+
+Whoops provides support for opening files in your editor. To enable this add the following keys to `config/app.php`:
+
+```php
+    'Error' => [
+        // ...
+        'handler' => [
+            'editor' => 'phpstorm', // Supported editors are: sublime, textmate, emacs, macvim, phpstorm
+            'hostRoot' => '/Users/[username]/Projects/[project-name]', // Set this when developing remotely (e.g. with Vagrant)
+        ]
+    ],
+```
+
 ## License
 
 Copyright (c)2015, Jad Bitar and licensed under [The MIT License][mit].
